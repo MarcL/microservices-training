@@ -5,9 +5,11 @@
     "license": "MIT",
     "dependencies": {
         "babel-register": "~6.26.0",
+        "body-parser": "~1.18.2",
         "express": "~4.16.2",
         "request": "~2.83.0",
-        "request-promise": "~4.2.2"
+        "request-promise": "~4.2.2",
+        "uuid": "~3.2.1"
     },
     "devDependencies": {
         "babel-preset-env": "~1.6.1"
