@@ -6,6 +6,7 @@ const service2 = port => {
     app.use(bodyParser.json());
 
     app.post('/users', (request, response) => {
+        console.log('service2:');
         console.log(request.body);
         response.json({message: 'service2'});
     });
