@@ -1,3 +1,5 @@
+import uuid from 'uuid';
+
 const event = (userData, type, payload) => ({
     id: uuid(),
     timestamp: Date.now(),

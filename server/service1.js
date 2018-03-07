@@ -1,25 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import uuid from 'uuid';
-import requestPromise from 'request-promise';
 import event from './event';
-
-const validateUser = userData => {
-    return userData && userData.email && userData.password;
-};
-
-const callGateway = body => {
-    const options = {
-        uri: 'http://localhost:4000/users',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body,
-        json: true
-    };
-
-    return requestPromise.post(options);
-};
+import validateUserData from './validateUserData';
+import callGateway from './callGateway';
 
 const service1 = port => {
     const app = express();
@@ -28,7 +11,7 @@ const service1 = port => {
     app.post('/', (request, response) => {
         const userData = request.body;
 
-        if (validateUser(userData)) {
+        if (validateUserData(userData)) {
             const {email, password} = userData;
 
             const payload = {
@@ -36,9 +19,9 @@ const service1 = port => {
                 password
             };
 
-            const event = event(userData, 'user/create', payload);
+            const newEvent = event(userData, 'user/create', payload);
 
-            return callGateway(event)
+            return callGateway('http://localhost:4000/users', newEvent)
                 .then(() => {
                     response.json({success: true});
                 })
@@ -47,7 +30,10 @@ const service1 = port => {
                 });
         }
 
-        response.json({success: false, error: 'Aggregate route failure'});
+        response.json({
+            success: false,
+            error: 'Aggregate root failure (validation failed)'
+        });
     });
 
     app.listen(port, () => console.log(`Listening on port : ${port}`));
