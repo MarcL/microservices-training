@@ -4,7 +4,7 @@ import event from './event';
 import validateUserData from './validateUserData';
 import callGateway from './callGateway';
 
-const service1 = port => {
+const service1 = (port) => {
     const app = express();
     app.use(bodyParser.json());
 
@@ -12,27 +12,27 @@ const service1 = port => {
         const userData = request.body;
 
         if (validateUserData(userData)) {
-            const {email, password} = userData;
+            const { email, password } = userData;
 
             const payload = {
                 email,
-                password
+                password,
             };
 
             const newEvent = event(userData, 'user/create', payload);
 
             return callGateway('http://localhost:4000/users', newEvent)
                 .then(() => {
-                    response.json({success: true});
+                    response.json({ success: true });
                 })
-                .catch(error => {
-                    reponse.json({success: false, error: error.message});
+                .catch((error) => {
+                    response.json({ success: false, error: error.message });
                 });
         }
 
-        response.json({
+        return response.json({
             success: false,
-            error: 'Aggregate root failure (validation failed)'
+            error: 'Aggregate root failure (validation failed)',
         });
     });
 

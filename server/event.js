@@ -4,7 +4,7 @@ const event = (userData, type, payload) => ({
     id: uuid(),
     timestamp: Date.now(),
     type,
-    payload
+    payload,
 });
 
 export default event;

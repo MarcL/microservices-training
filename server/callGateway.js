@@ -4,10 +4,10 @@ const callGateway = (uri, body) => {
     const options = {
         uri,
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         body,
-        json: true
+        json: true,
     };
 
     return requestPromise.post(options);
