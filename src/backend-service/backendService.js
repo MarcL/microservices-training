@@ -1,4 +1,7 @@
 import createServer from '../createServer';
+import { consume } from '../messagingClient';
+
+const QUEUE_NAME = 'user';
 
 const applyRoutes = (app) => {
     app.post('/users', async (request, response) => {
@@ -8,6 +11,17 @@ const applyRoutes = (app) => {
     });
 };
 
+const eventHandler = (event) => {
+    // Create user
+    if (event.type === 'user/create') {
+        console.log('Create new user');
+        console.log(event.payload);
+    }
+
+    // Send message to client
+};
+
 const backedService = port => createServer(port, applyRoutes);
+consume(QUEUE_NAME, eventHandler);
 
 export default backedService;
