@@ -49,3 +49,5 @@ SOURCES
 SPECS
 cosmos-versions
 nvm_install.sh
+
+data
