@@ -13,25 +13,32 @@ const getChannel = async () => {
     return channel;
 };
 
-const createQueue = async (queueName, messageChannel) => {
+const createQueue = async (queueName, messageChannel) =>
     messageChannel.assertQueue(queueName);
+
+const createExchange = (exchangeName, messageChannel) => {
+    messageChannel.assertExchange(exchangeName, 'fanout', { durable: false });
 };
 
-const publish = async (queueName, event) => {
+const publish = async (exchangeName, event) => {
     const messageChannel = await getChannel();
-    await createQueue(queueName, messageChannel);
+    createExchange(exchangeName, messageChannel);
 
-    return messageChannel.sendToQueue(
-        queueName,
+    return messageChannel.publish(
+        exchangeName,
+        '',
         Buffer.from(JSON.stringify(event)),
     );
 };
 
-const consume = async (queueName, handleEvent) => {
+const consume = async (exchangeName, queueName, handleEvent) => {
     const messageChannel = await getChannel();
-    await createQueue(queueName, messageChannel);
+    createExchange(exchangeName, messageChannel);
+    const queue = await createQueue(queueName, messageChannel);
 
-    return messageChannel.consume(queueName, (message) => {
+    messageChannel.bindQueue(queue.queue, exchangeName, '');
+
+    return messageChannel.consume(queue.queue, (message) => {
         if (message !== null) {
             const event = JSON.parse(message.content.toString());
             messageChannel.ack(message);

@@ -2,7 +2,7 @@ import userCreate from './middleware/userCreate';
 import userCreateMessage from './middleware/userCreateMessage';
 import createServer from '../createServer';
 import { consume } from '../messagingClient';
-import { RESPONSE_QUEUE } from '../queueNames';
+import { USER_TOPIC, RESPONSE_QUEUE } from '../queueNames';
 import { USER_CREATED } from '../eventNames';
 
 const applyRoutes = (app) => {
@@ -18,6 +18,6 @@ const eventHandler = (consumedEvent) => {
 };
 
 const clientService = port => createServer(port, applyRoutes);
-consume(RESPONSE_QUEUE, eventHandler);
+consume(USER_TOPIC, RESPONSE_QUEUE, eventHandler);
 
 export default clientService;

@@ -1,7 +1,7 @@
 import event from '../../event';
 import validateUserData from '../validator/validateUserData';
 import { publish } from '../../messagingClient';
-import { USER_QUEUE } from '../../queueNames';
+import { USER_TOPIC } from '../../queueNames';
 import { USER_CREATE } from '../../eventNames';
 
 const userCreateMessage = (request, response) => {
@@ -19,7 +19,7 @@ const userCreateMessage = (request, response) => {
             timeout,
         });
 
-        return publish(USER_QUEUE, newEvent)
+        return publish(USER_TOPIC, newEvent)
             .then(() => {
                 response.json({ success: true });
             })

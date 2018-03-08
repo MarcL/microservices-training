@@ -1,7 +1,7 @@
 import createServer from '../createServer';
 import { publish, consume } from '../messagingClient';
 import event from '../event';
-import { USER_QUEUE, RESPONSE_QUEUE } from '../queueNames';
+import { USER_TOPIC, USER_QUEUE, RESPONSE_QUEUE } from '../queueNames';
 import { USER_CREATE, USER_CREATED } from '../eventNames';
 
 const applyRoutes = (app) => {
@@ -15,7 +15,7 @@ const applyRoutes = (app) => {
 const eventHandler = (consumedEvent) => {
     // Create user
     if (consumedEvent.type === USER_CREATE) {
-        console.log(`Create new user : ${consumedEvent.id}`);
+        console.log(`Create new user (service 1) : ${consumedEvent.id}`);
         console.log(consumedEvent.payload);
 
         const responseEvent = event(USER_CREATED, { id: consumedEvent.id });
@@ -24,6 +24,6 @@ const eventHandler = (consumedEvent) => {
 };
 
 const backedService = port => createServer(port, applyRoutes);
-consume(USER_QUEUE, eventHandler);
+consume(USER_TOPIC, USER_QUEUE, eventHandler);
 
 export default backedService;
