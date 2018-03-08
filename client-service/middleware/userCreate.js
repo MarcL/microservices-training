@@ -1,6 +1,6 @@
 import event from '../event';
-import validateUserData from '../validators/validateUserData';
-import callGateway from '../callGateway';
+import validateUserData from '../validator/validateUserData';
+import callGateway from '../service/callGateway';
 
 const userCreate = (request, response) => {
     const userData = request.body;
