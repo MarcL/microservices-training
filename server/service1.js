@@ -1,16 +1,10 @@
-import express from 'express';
-import bodyParser from 'body-parser';
 import userCreate from './middleware/userCreate';
+import createServer from './createServer';
 
-const service1 = (port) => {
-    const app = express();
-    app.use(bodyParser.json());
-
+const applyRoutes = (app) => {
     app.post('/', userCreate);
-
-    app.listen(port, () => console.log(`Listening on port : ${port}`));
-
-    return app;
 };
+
+const service1 = port => createServer(port, applyRoutes);
 
 export default service1;
