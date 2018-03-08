@@ -5,7 +5,7 @@ const applyRoutes = (app) => {
         const { timeout = 0 } = request.body;
         console.log('backedService:');
         console.log(request.body);
-        Promise.delay(timeout, () => {
+        return Promise.delay(timeout, () => {
             response.json({ message: 'service2' });
         });
     });
