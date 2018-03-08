@@ -22,6 +22,7 @@
     "scripts": {
         "lint": "eslint .",
         "start": "node .",
-        "watch": "nodemon --watch index.js --watch server"
+        "watch":
+            "nodemon --watch index.js --watch createServer.js --watch backend-service --watch client-service"
     }
 }
