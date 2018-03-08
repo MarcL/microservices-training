@@ -24,8 +24,8 @@ const userCreate = (request, response) => {
             callGateway('http://localhost:4000/users', newEvent);
 
         return circuitBreaker(makeRequest)
-            .then(() => {
-                response.json({ success: true });
+            .then((data) => {
+                response.json({ success: true, data });
             })
             .catch((error) => {
                 response.json({ success: false, error: error.message });
