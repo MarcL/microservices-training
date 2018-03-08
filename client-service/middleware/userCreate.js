@@ -6,14 +6,18 @@ const userCreate = (request, response) => {
     const userData = request.body;
 
     if (validateUserData(userData)) {
-        const { email, password } = userData;
+        const { email, password, timeout } = userData;
 
         const payload = {
             email,
             password,
         };
 
-        const newEvent = event(userData, 'user/create', payload);
+        const newEvent = Object.assign(
+            {},
+            event(userData, 'user/create', payload),
+            { timeout },
+        );
 
         return callGateway('http://localhost:4000/users', newEvent)
             .then(() => {
