@@ -1,5 +1,5 @@
 import event from '../event';
-import validateUserData from '../validateUserData';
+import validateUserData from '../validators/validateUserData';
 import callGateway from '../callGateway';
 
 const userCreate = (request, response) => {
