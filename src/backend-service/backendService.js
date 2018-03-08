@@ -2,6 +2,7 @@ import createServer from '../createServer';
 import { publish, consume } from '../messagingClient';
 import event from '../event';
 import { USER_QUEUE, RESPONSE_QUEUE } from '../queueNames';
+import { USER_CREATE, USER_CREATED } from '../eventNames';
 
 const applyRoutes = (app) => {
     app.post('/users', async (request, response) => {
@@ -13,11 +14,11 @@ const applyRoutes = (app) => {
 
 const eventHandler = (consumedEvent) => {
     // Create user
-    if (consumedEvent.type === 'user/create') {
+    if (consumedEvent.type === USER_CREATE) {
         console.log(`Create new user : ${consumedEvent.id}`);
         console.log(consumedEvent.payload);
 
-        const responseEvent = event('user/created', { id: consumedEvent.id });
+        const responseEvent = event(USER_CREATED, { id: consumedEvent.id });
         publish(RESPONSE_QUEUE, responseEvent);
     }
 };

@@ -2,6 +2,7 @@ import event from '../../event';
 import validateUserData from '../validator/validateUserData';
 import callGateway from '../service/callGateway';
 import circuitBreaker from '../service/circuitBreaker';
+import { USER_CREATE } from '../../eventNames';
 
 const userCreate = (request, response) => {
     const userData = request.body;
@@ -14,7 +15,7 @@ const userCreate = (request, response) => {
             password,
         };
 
-        const newEvent = Object.assign({}, event('user/create', payload), {
+        const newEvent = Object.assign({}, event(USER_CREATE, payload), {
             timeout,
         });
 

@@ -2,6 +2,7 @@ import event from '../../event';
 import validateUserData from '../validator/validateUserData';
 import { publish } from '../../messagingClient';
 import { USER_QUEUE } from '../../queueNames';
+import { USER_CREATE } from '../../eventNames';
 
 const userCreateMessage = (request, response) => {
     const userData = request.body;
@@ -14,7 +15,7 @@ const userCreateMessage = (request, response) => {
             password,
         };
 
-        const newEvent = Object.assign({}, event('user/create', payload), {
+        const newEvent = Object.assign({}, event(USER_CREATE, payload), {
             timeout,
         });
 
