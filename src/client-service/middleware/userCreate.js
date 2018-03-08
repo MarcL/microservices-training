@@ -14,11 +14,9 @@ const userCreate = (request, response) => {
             password,
         };
 
-        const newEvent = Object.assign(
-            {},
-            event(userData, 'user/create', payload),
-            { timeout },
-        );
+        const newEvent = Object.assign({}, event('user/create', payload), {
+            timeout,
+        });
 
         const makeRequest = () =>
             callGateway('http://localhost:4000/users', newEvent);

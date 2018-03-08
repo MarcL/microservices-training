@@ -1,8 +1,7 @@
 import event from '../event';
 import validateUserData from '../validator/validateUserData';
 import { publish } from '../../messagingClient';
-
-const QUEUE_NAME = 'user';
+import { USER_QUEUE } from '../../queueNames';
 
 const userCreateMessage = (request, response) => {
     const userData = request.body;
@@ -15,13 +14,11 @@ const userCreateMessage = (request, response) => {
             password,
         };
 
-        const newEvent = Object.assign(
-            {},
-            event(userData, 'user/create', payload),
-            { timeout },
-        );
+        const newEvent = Object.assign({}, event('user/create', payload), {
+            timeout,
+        });
 
-        return publish(QUEUE_NAME, newEvent)
+        return publish(USER_QUEUE, newEvent)
             .then(() => {
                 response.json({ success: true });
             })

@@ -1,6 +1,6 @@
 import uuid from 'uuid';
 
-const event = (userData, type, payload) => ({
+const event = (type, payload) => ({
     id: uuid(),
     timestamp: Date.now(),
     type,
