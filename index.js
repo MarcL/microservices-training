@@ -1,10 +1,13 @@
 require('babel-register');
 global.Promise = require('bluebird');
 
-const server1 = require('./src/client-service/clientService').default;
-const server2 = require('./src/backend-service/backendService').default;
+const clientServer = require('./src/client-service/clientService').default;
+const backendServer = require('./src/backend-service/backendService').default;
 const eventStore = require('./src/eventStore/eventStore').default;
 
-server1(3000);
-server2(4000);
+clientServer(3000);
 eventStore(5001);
+
+setTimeout(() => {
+    backendServer(4000);
+}, 1000);
