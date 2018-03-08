@@ -7,7 +7,7 @@ const DEFAULT_TIMEOUT = 2000;
 let state = CLOSED_STATE;
 let timer = null;
 const changeState = (newState) => {
-    console.log(`Changing state : ${state} => ${newState}`);
+    console.log(`CircuitBreaker : change state : ${state} => ${newState}`);
     state = newState;
 };
 
