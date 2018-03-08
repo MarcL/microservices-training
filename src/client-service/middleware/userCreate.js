@@ -1,6 +1,7 @@
 import event from '../event';
 import validateUserData from '../validator/validateUserData';
 import callGateway from '../service/callGateway';
+import circuitBreaker from '../service/circuitBreaker';
 
 const userCreate = (request, response) => {
     const userData = request.body;
@@ -19,7 +20,10 @@ const userCreate = (request, response) => {
             { timeout },
         );
 
-        return callGateway('http://localhost:4000/users', newEvent)
+        const makeRequest = () =>
+            callGateway('http://localhost:4000/users', newEvent);
+
+        return circuitBreaker(makeRequest)
             .then(() => {
                 response.json({ success: true });
             })
