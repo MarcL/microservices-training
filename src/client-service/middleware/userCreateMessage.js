@@ -1,4 +1,4 @@
-import event from '../event';
+import event from '../../event';
 import validateUserData from '../validator/validateUserData';
 import { publish } from '../../messagingClient';
 import { USER_QUEUE } from '../../queueNames';

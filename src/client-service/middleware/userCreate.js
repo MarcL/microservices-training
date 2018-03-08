@@ -1,4 +1,4 @@
-import event from '../event';
+import event from '../../event';
 import validateUserData from '../validator/validateUserData';
 import callGateway from '../service/callGateway';
 import circuitBreaker from '../service/circuitBreaker';

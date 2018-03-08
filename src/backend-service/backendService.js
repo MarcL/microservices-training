@@ -1,6 +1,6 @@
 import createServer from '../createServer';
 import { publish, consume } from '../messagingClient';
-import event from '../client-service/event';
+import event from '../event';
 import { USER_QUEUE, RESPONSE_QUEUE } from '../queueNames';
 
 const applyRoutes = (app) => {
