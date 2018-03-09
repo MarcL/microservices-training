@@ -1,0 +1,14 @@
+FROM node:8
+
+RUN mkdir -p /opt
+RUN mkdir -p /applocal
+
+RUN npm install -g yarn
+
+COPY .. /applocal
+
+WORKDIR /applocal
+
+RUN yarn install
+
+CMD yarn start:backend

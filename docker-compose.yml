@@ -1,0 +1,20 @@
+version: '2'
+services:
+  client:
+    build:
+      context: .
+      dockerfile: "Dockerfile-client"
+  backend:
+    build:
+      context: .
+      dockerfile: "Dockerfile-backend"
+  eventstore:
+    build:
+      context: .
+      dockerfile: "Dockerfile-eventstore"
+  rabbit:
+    image: rabbitmq:3.6.2-management
+    ports:
+      - "5672:5672"
+  test:
+    build: test/
