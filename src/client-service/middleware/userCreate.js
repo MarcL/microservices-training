@@ -20,7 +20,7 @@ const userCreate = (request, response) => {
         });
 
         const makeRequest = () =>
-            callGateway('http://localhost:4000/users', newEvent);
+            callGateway('http://backend:4000/users', newEvent);
 
         return circuitBreaker(makeRequest)
             .then((data) => {

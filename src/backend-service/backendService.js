@@ -51,7 +51,7 @@ const serverStarted = () => readLastViewData()
         const { timestamp, eventCount: lastEventCount = 0 } = document;
         eventCount += lastEventCount;
 
-        return callGateway('http://localhost:5001/', {}, 'get', { timestamp });
+        return callGateway('http://eventstore:5001/', {}, 'get', { timestamp });
     })
     .then(({ events }) => {
         if (events.length > 0) {

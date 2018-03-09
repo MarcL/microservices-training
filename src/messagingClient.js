@@ -5,7 +5,7 @@ let channel = null;
 
 const getChannel = async () => {
     if (!messagingClient) {
-        messagingClient = await amqplib.connect('amqp://localhost');
+        messagingClient = await amqplib.connect('amqp://rabbit');
 
         channel = await messagingClient.createChannel();
     }
