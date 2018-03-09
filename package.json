@@ -27,6 +27,9 @@
     "scripts": {
         "lint": "eslint .",
         "start": "node .",
+        "start:client": "node startClientServer.js",
+        "start:backend": "node startBackendServer.js",
+        "start:eventstore": "node startEventStoreServer.js",
         "test": "mocha --recursive --require babel-register",
         "watch": "nodemon --watch index.js --watch src"
     }
