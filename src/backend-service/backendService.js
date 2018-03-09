@@ -1,3 +1,5 @@
+import Datastore from 'nedb';
+import path from 'path';
 import createServer from '../createServer';
 import { publish, consume } from '../messagingClient';
 import event from '../event';
@@ -6,6 +8,12 @@ import { USER_CREATE, USER_CREATED } from '../eventNames';
 import callGateway from '../client-service/service/callGateway';
 
 let eventCount = 0;
+
+const appDirectory = path.dirname(require.main.filename);
+const database = new Datastore({
+    filename: `${appDirectory}/data/view.db`,
+    autoload: true,
+});
 
 const applyRoutes = (app) => {
     app.post('/users', async (request, response) => {
@@ -19,16 +27,46 @@ const applyRoutes = (app) => {
     });
 };
 
-const serverStarted = () => {
-    callGateway('http://localhost:5001/', {}, 'get')
-        .then(({ events }) => {
+const writeViewData = (count, lastId, timestamp) =>
+    database.update({ timestamp }, {
+        eventCount: count,
+        lastId,
+        timestamp,
+    }, { upsert: true });
+
+const readLastViewData = () =>
+    new Promise((resolve) => {
+        database
+            .find({})
+            .sort({ timestamp: -1 })
+            .limit(1)
+            .exec((error, documents) => {
+                const data = (error || documents.length === 0 ? {} : documents[0]);
+                resolve(data);
+            });
+    });
+
+const serverStarted = () => readLastViewData()
+    .then((document) => {
+        const { timestamp, eventCount: lastEventCount = 0 } = document;
+        eventCount += lastEventCount;
+
+        return callGateway('http://localhost:5001/', {}, 'get', { timestamp });
+    })
+    .then(({ events }) => {
+        if (events.length > 0) {
+            const { id: lastEventId, timestamp } = events[events.length - 1];
+
             eventCount += events.length;
-        })
-        .catch((error) => {
-            console.log('Error calling eventStore');
-            console.log(error.message);
-        });
-};
+            return writeViewData(eventCount, lastEventId, timestamp);
+        }
+
+        return Promise.resolve();
+    })
+    .catch((error) => {
+        console.log('Error calling eventStore');
+        console.log(error.message);
+    });
 
 const eventHandler = (consumedEvent) => {
     eventCount += 1;

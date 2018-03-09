@@ -19,9 +19,13 @@ const eventHandler = (consumedEvent) => {
 
 const applyRoutes = (app) => {
     app.get('/', (request, response) => {
-        database.find({}, (error, document) => {
-            response.json({ events: document });
-        });
+        const { timestamp = 0 } = request.query;
+
+        database.find({ timestamp: { $gt: Number(timestamp) } })
+            .sort({ timestamp: 1 })
+            .exec((error, documents) => {
+                response.json({ events: documents });
+            });
     });
 };
 

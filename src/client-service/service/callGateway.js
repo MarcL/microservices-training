@@ -2,7 +2,7 @@ import requestPromise from 'request-promise';
 
 const DEFAULT_REQUEST_TIMEOUT_MILLISECONDS = 5000;
 
-const callGateway = (uri, body, method = 'post') => {
+const callGateway = (uri, body, method = 'post', queryString = {}) => {
     const options = {
         method,
         uri,
@@ -12,6 +12,7 @@ const callGateway = (uri, body, method = 'post') => {
         body,
         json: true,
         timeout: DEFAULT_REQUEST_TIMEOUT_MILLISECONDS,
+        qs: queryString,
     };
 
     return requestPromise(options);
